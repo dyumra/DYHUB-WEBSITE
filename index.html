@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Secure Access</title>
+<style>
+  body {
+    background: #1a0000;
+    color: #fff;
+    font-family: system-ui, "Segoe UI", Arial;
+    display: grid;
+    place-items: center;
+    height: 100vh;
+  }
+  .card {
+    background: #330000;
+    border-radius: 20px;
+    box-shadow: 0 0 60px #ff000033;
+    padding: 28px 30px;
+    max-width: 420px;
+    width: 92%;
+  }
+  h1 {
+    margin: 0 0 18px;
+    text-align: center;
+    color: #ff4d4d;
+  }
+  input, button {
+    width: 100%;
+    border: 0;
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 16px;
+  }
+  input {
+    background: #4d0000;
+    color: #ffc6c6;
+    margin-bottom: 12px;
+  }
+  button {
+    background: #ff1a1a;
+    color: #1a0000;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .hint {
+    opacity: .6;
+    font-size: 13px;
+    text-align: center;
+    margin-top: 8px;
+  }
+  pre {
+    background:#4d0000;
+    padding:12px;
+    border-radius:12px;
+    overflow-x:auto;
+  }
+</style>
+</head>
+<body>
+<div class="card">
+  <h1>Secure Access</h1>
+  <input id="password" placeholder="Enter password">
+  <button id="accessBtn">Access</button>
+  <div class="hint">Authorized users only.</div>
+  <pre id="script" style="display:none;"></pre>
+</div>
+
+<script>
+const accessBtn = document.getElementById("accessBtn");
+const passwordInput = document.getElementById("password");
+const scriptBox = document.getElementById("script");
+
+// Lua script ของคุณ (ดึงจาก server ผ่าน fetch)
+accessBtn.onclick = async () => {
+  const pw = passwordInput.value;
+  if(pw === "dyumra123"){
+    try {
+      const res = await fetch("/script.lua", { headers: { "Authorization": "dyumra123" } });
+      if(res.ok){
+        const luaCode = await res.text();
+        scriptBox.style.display = "block";
+        scriptBox.textContent = luaCode;
+      } else {
+        alert("Failed to load script.");
+      }
+    } catch(e) {
+      alert("Error: " + e.message);
+    }
+  } else {
+    alert("Wrong password!");
+  }
+}
+</script>
+</body>
+</html>
