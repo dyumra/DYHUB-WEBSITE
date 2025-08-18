@@ -1,83 +1,69 @@
 const express = require('express');
 const app = express();
 
-// Key สำหรับดูหน้าเว็บ GUI
-const SECRET_KEY = "dyumra123";
-// Key สำหรับ executor
-const LUA_KEY = "dyumra123";
+const SECRET_KEY = 'dyumra123';
 
-// Lua script ของคุณ จาก GitHub
+// Lua script ของคุณ
 const luaScript = `loadstring(game:HttpGet("https://raw.githubusercontent.com/dyumra/kuy/refs/heads/main/.gitignore.lua"))()`;
 
-// หน้าเว็บ GUI inline
+// หน้าเว็บ GUI สำหรับกรอกรหัส
 const htmlPage = `
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="th">
 <head>
-<meta charset="utf-8">
-<title>Secure Access</title>
-<style>
-  body {background:#1a0000;color:#fff;font-family:system-ui,"Segoe UI",Arial;display:grid;place-items:center;height:100vh;}
-  .card {background:#330000;border-radius:20px;box-shadow:0 0 60px #ff000033;padding:28px 30px;max-width:420px;width:92%;}
-  h1 {margin:0 0 18px;text-align:center;color:#ff4d4d;}
-  input,button {width:100%;border:0;border-radius:12px;padding:14px;font-size:16px;}
-  input {background:#4d0000;color:#ffc6c6;margin-bottom:12px;}
-  button {background:#ff1a1a;color:#1a0000;font-weight:600;cursor:pointer;}
-  .hint {opacity:.6;font-size:13px;text-align:center;margin-top:8px;}
-  pre {background:#4d0000;padding:12px;border-radius:12px;overflow-x:auto; display:none;}
-</style>
+  <meta charset="UTF-8">
+  <title>Secure Script Access</title>
+  <style>
+    body { background: #1a0000; color: #fff; font-family: Arial, sans-serif; display: grid; place-items: center; height: 100vh; }
+    .container { background: #330000; padding: 20px; border-radius: 10px; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+    h1 { text-align: center; color: #ff4d4d; }
+    input, button { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: none; }
+    input { background: #4d0000; color: #fff; }
+    button { background: #ff1a1a; color: #fff; cursor: pointer; }
+    pre { background: #4d0000; padding: 10px; border-radius: 5px; display: none; white-space: pre-wrap; word-wrap: break-word; }
+  </style>
 </head>
 <body>
-<div class="card">
-  <h1>Secure Access</h1>
-  <input id="password" placeholder="Enter password">
-  <button id="accessBtn">Access</button>
-  <div class="hint">Authorized users only.</div>
-  <pre id="script"></pre>
-</div>
-<script>
-const accessBtn = document.getElementById("accessBtn");
-const passwordInput = document.getElementById("password");
-const scriptBox = document.getElementById("script");
-
-accessBtn.onclick = async () => {
-  if(passwordInput.value === "${SECRET_KEY}") {
-    try {
-      const res = await fetch("/script.lua", { headers: { "Authorization": "${LUA_KEY}" } });
-      if(res.ok){
-        const luaCode = await res.text();
-        scriptBox.style.display = "block";
-        scriptBox.textContent = luaCode;
+  <div class="container">
+    <h1>Enter Password</h1>
+    <input id="password" type="password" placeholder="Enter password">
+    <button id="submit">Submit</button>
+    <pre id="script"></pre>
+  </div>
+  <script>
+    document.getElementById('submit').onclick = async () => {
+      const password = document.getElementById('password').value;
+      if (password === '${SECRET_KEY}') {
+        try {
+          const res = await fetch('/script.lua');
+          if (res.ok) {
+            const luaCode = await res.text();
+            document.getElementById('script').style.display = 'block';
+            document.getElementById('script').textContent = luaCode;
+          } else {
+            alert('Failed to load script.');
+          }
+        } catch(e) {
+          alert('Error: ' + e.message);
+        }
       } else {
-        alert("Failed to load script.");
+        alert('Incorrect password!');
       }
-    } catch(e){
-      alert("Error: " + e.message);
-    }
-  } else {
-    alert("Wrong password!");
-  }
-}
-</script>
+    };
+  </script>
 </body>
 </html>
 `;
 
-// Endpoint สำหรับ executor โหลด Lua script
+// endpoint สำหรับ executor โหลด Lua script
 app.get('/script.lua', (req, res) => {
-  const auth = req.headers['authorization'];
-  if(auth === LUA_KEY){
-    res.type('text/plain').send(luaScript);
-  } else {
-    res.status(403).send("Access denied! Please use executor with key.");
-  }
+  res.type('text/plain').send(luaScript);
 });
 
 // หน้าเว็บ GUI
-app.get('/', (req, res) => {
+app.get('/:id', (req, res) => {
   res.send(htmlPage);
 });
 
-// ใช้ PORT จาก Render หรือ 3000
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Server running on port " + PORT));
