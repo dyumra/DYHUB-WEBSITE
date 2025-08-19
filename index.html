@@ -1,96 +1,197 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="th">
 <head>
-<meta charset="utf-8">
-<title>Secure Access</title>
-<style>
-  body {
-    background: #1a0000;
-    color: #fff;
-    font-family: system-ui, "Segoe UI", Arial;
-    display: grid;
-    place-items: center;
-    height: 100vh;
-  }
-  .card {
-    background: #330000;
-    border-radius: 20px;
-    box-shadow: 0 0 60px #ff000033;
-    padding: 28px 30px;
-    max-width: 420px;
-    width: 92%;
-  }
-  h1 {
-    margin: 0 0 18px;
-    text-align: center;
-    color: #ff4d4d;
-  }
-  input, button {
-    width: 100%;
-    border: 0;
-    border-radius: 12px;
-    padding: 14px;
-    font-size: 16px;
-  }
-  input {
-    background: #4d0000;
-    color: #ffc6c6;
-    margin-bottom: 12px;
-  }
-  button {
-    background: #ff1a1a;
-    color: #1a0000;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .hint {
-    opacity: .6;
-    font-size: 13px;
-    text-align: center;
-    margin-top: 8px;
-  }
-  pre {
-    background:#4d0000;
-    padding:12px;
-    border-radius:12px;
-    overflow-x:auto;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Red-Black Roblox Script Store</title>
+    <style>
+        /* Reset */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #1a0000, #330000);
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Snow effect */
+        .snowflake {
+            position: fixed;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            z-index: 9999;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            0% { transform: translateY(0) rotate(0deg); }
+            100% { transform: translateY(100vh) rotate(360deg); }
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 50px;
+            background: rgba(0,0,0,0.6);
+            box-shadow: 0 0 10px #ff0000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        header h1 {
+            color: #ff4444;
+            font-size: 1.8rem;
+        }
+
+        nav a {
+            color: #fff;
+            margin-left: 20px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #ff4444;
+        }
+
+        /* Store Grid */
+        .store {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            padding: 40px;
+        }
+
+        .product {
+            background: rgba(0,0,0,0.7);
+            border: 2px solid #ff0000;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .product:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #ff0000;
+        }
+
+        .product img {
+            width: 100%;
+            display: block;
+        }
+
+        .product-info {
+            padding: 15px;
+            text-align: center;
+        }
+
+        .product-info h2 {
+            color: #ff5555;
+            margin-bottom: 10px;
+        }
+
+        .product-info p {
+            color: #fff;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .buy-btn {
+            padding: 10px 20px;
+            background: #ff0000;
+            border: none;
+            border-radius: 8px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .buy-btn:hover {
+            background: #ff5555;
+        }
+    </style>
 </head>
 <body>
-<div class="card">
-  <h1>Secure Access</h1>
-  <input id="password" placeholder="Enter password">
-  <button id="accessBtn">Access</button>
-  <div class="hint">Authorized users only.</div>
-  <pre id="script" style="display:none;"></pre>
-</div>
+
+<header>
+    <h1>Red-Black Roblox Script Store</h1>
+    <nav>
+        <a href="#">หน้าหลัก</a>
+        <a href="#">สินค้า</a>
+        <a href="#">เติมเงิน</a>
+        <a href="#">ติดต่อ</a>
+    </nav>
+</header>
+
+<main class="store">
+    <div class="product">
+        <img src="https://i.ibb.co/1X6P0fG/xenon1.png" alt="DYHUB KEY ACCESS">
+        <div class="product-info">
+            <h2>Xenon Hub V1</h2>
+            <p>ขายสคริปต์ Roblox 17 ชิ้น</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB KEY ACCESS')">ซื้อเลย</button>
+        </div>
+    </div>
+
+    <div class="product">
+        <img src="https://i.ibb.co/0rZgG5Y/xenon2.png" alt="DYHUB PREMIUM KEY">
+        <div class="product-info">
+            <h2>Xenon Managers Tool</h2>
+            <p>เครื่องมือจัดการสคริปต์ Roblox 1 ชิ้น</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB PREMIUM KEY')">ซื้อเลย</button>
+        </div>
+    </div>
+
+    <div class="product">
+        <img src="https://i.ibb.co/z6j4G1n/wave.png" alt="DYHUB PC Executor">
+        <div class="product-info">
+            <h2>Wave PC Executor</h2>
+            <p>สคริปต์ Roblox 1 ชิ้น</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB PC Executor')">ซื้อเลย</button>
+        </div>
+    </div>
+
+    <div class="product">
+        <img src="https://i.ibb.co/7gH1qZZ/xenonprivate.png" alt="DYHUB Hub Private Access">
+        <div class="product-info">
+            <h2>Xenon Hub Private Access</h2>
+            <p>สคริปต์ Roblox 1 ชิ้น</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB Private Access')">ซื้อเลย</button>
+        </div>
+    </div>
+</main>
 
 <script>
-const accessBtn = document.getElementById("accessBtn");
-const passwordInput = document.getElementById("password");
-const scriptBox = document.getElementById("script");
+    // Snow Effect
+    const createSnowflake = () => {
+        const snowflake = document.createElement('div');
+        snowflake.classList.add('snowflake');
+        snowflake.style.width = snowflake.style.height = Math.random() * 5 + 2 + 'px';
+        snowflake.style.left = Math.random() * window.innerWidth + 'px';
+        snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+        document.body.appendChild(snowflake);
 
-// Lua script ของคุณ (ดึงจาก server ผ่าน fetch)
-accessBtn.onclick = async () => {
-  const pw = passwordInput.value;
-  if(pw === "dyumra123"){
-    try {
-      const res = await fetch("/script.lua", { headers: { "Authorization": "dyumra123" } });
-      if(res.ok){
-        const luaCode = await res.text();
-        scriptBox.style.display = "block";
-        scriptBox.textContent = luaCode;
-      } else {
-        alert("Failed to load script.");
-      }
-    } catch(e) {
-      alert("Error: " + e.message);
+        setTimeout(() => {
+            snowflake.remove();
+        }, 10000);
+    };
+
+    setInterval(createSnowflake, 200);
+
+    // Buy Button
+    function buyProduct(name) {
+        alert('คุณคลิกซื้อ: ' + name + '\nระบบชำระเงินยังไม่ถูกเชื่อมต่อ');
     }
-  } else {
-    alert("Wrong password!");
-  }
-}
 </script>
+
 </body>
 </html>
