@@ -1,196 +1,230 @@
 <!DOCTYPE html>
 <html lang="th">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Red-Black Roblox Script Store</title>
-    <style>
-        /* Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DYHUB Store</title>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Segoe UI', sans-serif; }
+body { background: linear-gradient(135deg,#1a0000,#330000); min-height:100vh; color:#fff; overflow-x:hidden; }
 
-        body {
-            background: linear-gradient(135deg, #1a0000, #330000);
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-        }
+/* Header */
+header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:20px 50px;
+  background: rgba(0,0,0,0.7);
+  box-shadow:0 0 15px #ff0000;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+header h1 { color:#ff4444; font-size:2rem; text-shadow:0 0 10px #ff0000; }
+.menu-toggle {
+  font-size:2rem; cursor:pointer; user-select:none; transition:0.3s;
+}
+.menu-toggle:hover { color:#ff6666; }
 
-        /* Snow effect */
-        .snowflake {
-            position: fixed;
-            top: -10px;
-            background: white;
-            border-radius: 50%;
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: 9999;
-            animation: fall linear infinite;
-        }
+/* Side Menu */
+.menu {
+  position: fixed;
+  top:0;
+  left:-250px;
+  width:250px;
+  height:100%;
+  background: rgba(0,0,0,0.9);
+  box-shadow:5px 0 20px rgba(255,0,0,0.5);
+  padding:50px 20px;
+  transition:0.3s;
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+  z-index:999;
+}
+.menu.show { left:0; }
+.menu button {
+  padding:12px;
+  background: linear-gradient(45deg,#ff0000,#ff5555);
+  border:none;
+  border-radius:10px;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  font-size:1rem;
+  text-align:left;
+  transition:0.3s;
+}
+.menu button:hover { background: linear-gradient(45deg,#ff5555,#ff2222); }
 
-        @keyframes fall {
-            0% { transform: translateY(0) rotate(0deg); }
-            100% { transform: translateY(100vh) rotate(360deg); }
-        }
+/* Main Content */
+.main-content { padding:80px 30px; text-align:center; }
 
-        /* Header */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px 50px;
-            background: rgba(0,0,0,0.6);
-            box-shadow: 0 0 10px #ff0000;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-        }
+/* Profile Section */
+.profile-section {
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  margin-bottom:20px;
+}
+.profile-section img { width:100px; height:100px; border-radius:50%; border:2px solid #ff0000; }
+.profile-info { text-align:left; }
+.profile-info .stars { color:#ffd700; font-size:1.2rem; margin-bottom:5px; }
+.profile-info p { margin-top:5px; color:#fff; }
 
-        header h1 {
-            color: #ff4444;
-            font-size: 1.8rem;
-        }
+/* Video Section */
+.video-section img {
+  width:80%; max-width:600px; border-radius:15px; margin-top:30px; box-shadow:0 0 15px #ff0000;
+  animation: float 3s ease-in-out infinite;
+}
 
-        nav a {
-            color: #fff;
-            margin-left: 20px;
-            text-decoration: none;
-            transition: 0.3s;
-        }
+/* Product Section */
+.store { display:flex; flex-direction:column; gap:50px; margin-top:30px; }
+.category-title { font-size:1.8rem; color:#ff6666; text-shadow:0 0 5px #ff0000; margin-bottom:20px; }
+.product-row { display:flex; gap:25px; overflow-x:auto; padding-bottom:10px; }
+.product-row::-webkit-scrollbar { height:8px; }
+.product-row::-webkit-scrollbar-thumb { background:#ff4444; border-radius:4px; }
+.product { background:rgba(0,0,0,0.8); border:2px solid #ff0000; border-radius:15px; min-width:250px; display:flex; flex-direction:column; align-items:center; padding:15px; transition:0.3s; cursor:pointer; }
+.product:hover { transform:scale(1.05); box-shadow:0 0 20px #ff0000,0 0 30px rgba(255,0,0,0.5) inset; }
+.product img { width:100%; height:150px; object-fit:contain; border-radius:10px; animation:float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);} }
+.product-info { text-align:center; margin-top:10px; }
+.product-info h2 { color:#ff6666; font-size:1.1rem; margin-bottom:5px; text-shadow:0 0 5px #ff0000; }
+.product-info p { color:#fff; font-size:0.9rem; margin-bottom:10px; }
+.buy-btn { padding:8px 15px; background:linear-gradient(45deg,#ff0000,#ff5555); border:none; border-radius:8px; color:#fff; font-weight:bold; cursor:pointer; font-size:0.9rem; transition:0.3s; box-shadow:0 0 8px #ff0000; }
+.buy-btn:hover { transform:translateY(-2px); box-shadow:0 0 15px #ff5555,0 0 20px #ff0000 inset; }
 
-        nav a:hover {
-            color: #ff4444;
-        }
-
-        /* Store Grid */
-        .store {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 20px;
-            padding: 40px;
-        }
-
-        .product {
-            background: rgba(0,0,0,0.7);
-            border: 2px solid #ff0000;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: 0.3s;
-            cursor: pointer;
-        }
-
-        .product:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px #ff0000;
-        }
-
-        .product img {
-            width: 100%;
-            display: block;
-        }
-
-        .product-info {
-            padding: 15px;
-            text-align: center;
-        }
-
-        .product-info h2 {
-            color: #ff5555;
-            margin-bottom: 10px;
-        }
-
-        .product-info p {
-            color: #fff;
-            font-size: 0.9rem;
-            margin-bottom: 15px;
-        }
-
-        .buy-btn {
-            padding: 10px 20px;
-            background: #ff0000;
-            border: none;
-            border-radius: 8px;
-            color: #fff;
-            font-weight: bold;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .buy-btn:hover {
-            background: #ff5555;
-        }
-    </style>
+/* Snow Effect */
+.snowflake { position: fixed; top:-10px; background:white; border-radius:50%; opacity:0.8; pointer-events:none; z-index:9999; animation:fall linear infinite; }
+@keyframes fall { 0%{transform:translateY(0) rotate(0deg);}100%{transform:translateY(100vh) rotate(360deg);} }
+</style>
 </head>
 <body>
 
 <header>
-    <h1>Red-Black Roblox Script Store</h1>
-    <nav>
-        <a href="#">หน้าหลัก</a>
-        <a href="#">สินค้า</a>
-        <a href="#">เติมเงิน</a>
-        <a href="#">ติดต่อ</a>
-    </nav>
+  <h1>DYHUB</h1>
+  <div class="menu-toggle" id="menuToggle">&gt;</div>
 </header>
 
-<main class="store">
-    <div class="product">
-        <img src="https://i.ibb.co/1X6P0fG/xenon1.png" alt="DYHUB KEY ACCESS">
-        <div class="product-info">
-            <h2>Xenon Hub V1</h2>
-            <p>ขายสคริปต์ Roblox 17 ชิ้น</p>
-            <button class="buy-btn" onclick="buyProduct('DYHUB KEY ACCESS')">ซื้อเลย</button>
-        </div>
-    </div>
+<div class="menu" id="sideMenu">
+  <button onclick="showContent('home')">หน้าหลัก</button>
+  <button onclick="showContent('products')">สินค้า</button>
+  <button onclick="showContent('topup')">เติมเงิน</button>
+  <button onclick="showContent('contact')">ติดต่อ</button>
+</div>
 
-    <div class="product">
-        <img src="https://i.ibb.co/0rZgG5Y/xenon2.png" alt="DYHUB PREMIUM KEY">
-        <div class="product-info">
-            <h2>Xenon Managers Tool</h2>
-            <p>เครื่องมือจัดการสคริปต์ Roblox 1 ชิ้น</p>
+<div class="main-content" id="contentArea">
+  <!-- หน้าหลักเริ่มต้น -->
+  <h2>DYHUB SHOP</h2>
+  <p>โปร Roblox อันดับ 1 ที่มีลูกค้ามากมาย</p>
+  <div class="profile-section">
+    <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="Profile">
+    <div class="profile-info">
+      <div class="stars">⭐⭐⭐⭐⭐</div>
+      <p>มียอดผู้ใช้มากกว่า 1000++ คน</p>
+    </div>
+  </div>
+  <div class="video-section">
+    <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="Video">
+  </div>
+  <!-- สินค้าต่อท้าย -->
+  <div class="store">
+    <div class="category">
+      <div class="category-title">สินค้าทั้งหมด</div>
+      <div class="product-row">
+        <div class="product">
+          <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="DYHUB LOADER V2">
+          <div class="product-info">
+            <h2>DYHUB LOADER V2</h2>
+            <p>🛒 10 สินค้า</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB LOADER V2')">ซื้อเลย</button>
+          </div>
+        </div>
+        <div class="product">
+          <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="DYHUB PREMIUM KEY">
+          <div class="product-info">
+            <h2>DYHUB PREMIUM KEY</h2>
+            <p>🛒 10 สินค้า</p>
             <button class="buy-btn" onclick="buyProduct('DYHUB PREMIUM KEY')">ซื้อเลย</button>
+          </div>
         </div>
-    </div>
-
-    <div class="product">
-        <img src="https://i.ibb.co/z6j4G1n/wave.png" alt="DYHUB PC Executor">
-        <div class="product-info">
-            <h2>Wave PC Executor</h2>
-            <p>สคริปต์ Roblox 1 ชิ้น</p>
-            <button class="buy-btn" onclick="buyProduct('DYHUB PC Executor')">ซื้อเลย</button>
+        <div class="product">
+          <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="DYHUB PC EXECUTOR">
+          <div class="product-info">
+            <h2>DYHUB PC EXECUTOR</h2>
+            <p>🛒 10 สินค้า</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB PC EXECUTOR')">ซื้อเลย</button>
+          </div>
         </div>
-    </div>
-
-    <div class="product">
-        <img src="https://i.ibb.co/7gH1qZZ/xenonprivate.png" alt="DYHUB Hub Private Access">
-        <div class="product-info">
-            <h2>Xenon Hub Private Access</h2>
-            <p>สคริปต์ Roblox 1 ชิ้น</p>
-            <button class="buy-btn" onclick="buyProduct('DYHUB Private Access')">ซื้อเลย</button>
+        <div class="product">
+          <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="DYHUB PRIVATE ACCESS">
+          <div class="product-info">
+            <h2>DYHUB PRIVATE ACCESS</h2>
+            <p>🛒 10 สินค้า</p>
+            <button class="buy-btn" onclick="buyProduct('DYHUB PRIVATE ACCESS')">ซื้อเลย</button>
+          </div>
         </div>
+      </div>
     </div>
-</main>
+  </div>
+</div>
 
 <script>
-    // Snow Effect
-    const createSnowflake = () => {
-        const snowflake = document.createElement('div');
-        snowflake.classList.add('snowflake');
-        snowflake.style.width = snowflake.style.height = Math.random() * 5 + 2 + 'px';
-        snowflake.style.left = Math.random() * window.innerWidth + 'px';
-        snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
-        document.body.appendChild(snowflake);
+// Snow Effect
+const createSnowflake = () => {
+  const snowflake = document.createElement('div');
+  snowflake.classList.add('snowflake');
+  snowflake.style.width = snowflake.style.height = Math.random() * 5 + 2 + 'px';
+  snowflake.style.left = Math.random() * window.innerWidth + 'px';
+  snowflake.style.animationDuration = Math.random() * 5 + 5 + 's';
+  document.body.appendChild(snowflake);
+  setTimeout(() => { snowflake.remove(); }, 10000);
+};
+setInterval(createSnowflake, 200);
 
-        setTimeout(() => {
-            snowflake.remove();
-        }, 10000);
-    };
+// Menu Toggle
+const menuToggle = document.getElementById('menuToggle');
+const sideMenu = document.getElementById('sideMenu');
+const contentArea = document.getElementById('contentArea');
 
-    setInterval(createSnowflake, 200);
+menuToggle.addEventListener('click', ()=>{
+  sideMenu.classList.toggle('show');
+  menuToggle.textContent = sideMenu.classList.contains('show') ? '<' : '>';
+});
 
-    // Buy Button
-    function buyProduct(name) {
-        alert('คุณคลิกซื้อ: ' + name + '\nระบบชำระเงินยังไม่ถูกเชื่อมต่อ');
-    }
+function showContent(page){
+  sideMenu.classList.remove('show');
+  menuToggle.textContent = '>';
+  let html = '';
+  if(page === 'home'){
+    html = `
+      <h2>DYHUB SHOP</h2>
+      <p>โปร Roblox อันดับ 1 ที่มีลูกค้ามากมาย</p>
+      <div class="profile-section">
+        <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="Profile">
+        <div class="profile-info">
+          <div class="stars">⭐⭐⭐⭐⭐</div>
+          <p>มียอดผู้ใช้มากกว่า 1000++ คน</p>
+        </div>
+      </div>
+      <div class="video-section">
+        <img src="https://media.discordapp.net/attachments/1388623461777150023/1389219241575714938/DYHUB.png" alt="Video">
+      </div>`;
+  } else if(page === 'products'){
+    html = document.querySelector('.store').outerHTML;
+  } else if(page === 'topup'){
+    html = `<h2>เติมเงิน</h2><p>เติมเงินที่ <a href="https://dsc.gg/dyhub" target="_blank">dsc.gg/dyhub</a></p>`;
+  } else if(page === 'contact'){
+    html = `<h2>ติดต่อ</h2><p>ติดต่อที่ <a href="https://dsc.gg/dyhub" target="_blank">dsc.gg/dyhub</a></p>`;
+  }
+  contentArea.innerHTML = html;
+}
+
+// Buy Button
+function buyProduct(name) {
+  alert('คุณคลิกซื้อ: ' + name + '\nระบบชำระเงินยังไม่ถูกเชื่อมต่อ');
+}
 </script>
 
 </body>
