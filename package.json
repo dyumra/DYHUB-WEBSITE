@@ -1,0 +1,14 @@
+{
+  "name": "DYHUB-store",
+  "version": "1.0.0",
+  "description": "Store for DYHUB",
+  "main": "index.js",
+  "scripts": {
+    "start": "npx serve ."
+  },
+  "dependencies": {
+    "serve": "^14.2.0"
+  },
+  "author": "",
+  "license": "MIT"
+}
